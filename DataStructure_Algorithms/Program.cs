@@ -8,8 +8,13 @@ namespace DataStructure_Algorithms
     {
         static void Main(string[] args)
         {
-            TestSomething();
+            SimilarString str = new SimilarString();
+            string[] inputGroup = {"kccomwcgcs","socgcmcwkc","sgckwcmcoc","coswcmcgkc","cowkccmsgc","cosgmccwkc","sgmkwcccoc","coswmccgkc","kowcccmsgc","kgcomwcccs"};
 
+            str.NumSimilarGroups(inputGroup);
+
+            //TestSomething();
+            Sort s = new Sort();
             var p = new Program();
             p.IsPrime(17);
 
@@ -19,7 +24,7 @@ namespace DataStructure_Algorithms
 
             p.LCM(20, 30);
             p.LCM(100, 35);
-            Sort s = new Sort();
+            
             s.InsertionSort();
             s.SelectionSort();
             s.BubbleSort();

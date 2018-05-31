@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data.SqlTypes;
+using System.Windows.Markup;
 
 namespace DataStructure_Algorithms
 {
@@ -69,20 +71,25 @@ namespace DataStructure_Algorithms
             }
         }
 
+        #region HeapSort
         /// <summary>
         /// The algorithm builds a heap. It then repeatedly swaps the first and last items in the heap, 
         /// and rebuilds the heap excluding the last item. During each pass, one item is removed from the 
         /// heap and added to the end of the array where the items are placed in sorted order.
+        /// The time complexity is O(N Log N) + O (N Log N)
         /// </summary>
         public void HeapSort()
         {
             int[] input = GetDataInput(100);
+            // Time to build the initial heap O(N Log N).
             MakeHeapTree(ref input, 0, input.Length-1);
 
             for (int i = input.Length - 1; i > 0; i--)
             {
 
                 Swap(ref input, i, 0);
+                // Restoring Heap Property by travelling through height of the tree. This is Log N
+                // Since this is to be done N times, it becomes N Log N
                 MakeHeapTree(ref input, 0, i - 1); //?? Should we call this or make the choice of pushing the root down.
             }
         }
@@ -110,7 +117,9 @@ namespace DataStructure_Algorithms
                 }
             }
         }
+        #endregion
 
+        #region QuickSort
         public void QuickSort()
         {
             int[] input = GetDataInput(10);
@@ -269,7 +278,40 @@ namespace DataStructure_Algorithms
             Swap(ref input, lower + 1, end);
             return lower + 1;
         }
-        
+        #endregion
+
+        #region Merge Sort
+
+        public void MergeSort()
+        {
+            int[] input = GetDataInput(100);
+        }
+
+        private void MergeSort(ref int[] input, ref int[] scratch, int start, int end)
+        {
+            // If the array contains only one item then it is sorted.
+            if(start == end)
+                return;
+            // Break the array in to two partitions.
+            int midpoint = (start + end)/2;
+
+            // Call Merge sort to recursively to sort the two parts
+            MergeSort(ref input, ref scratch, start, midpoint);
+            MergeSort(ref input, ref scratch, midpoint + 1, end);
+
+            // Merge the two halves.
+            int leftIndex = start;
+            int rightIndex = midpoint + 1;
+            int scratchIndex = leftIndex;
+            while (leftIndex <= midpoint && rightIndex <= end)
+            {
+                
+            }
+
+        }
+        #endregion
+
+        #region Utility
         private void Swap(ref int[] input, int index1, int index2)
         {
             if (index1 > input.Length - 1 || index2 > input.Length - 1)
@@ -290,5 +332,40 @@ namespace DataStructure_Algorithms
 
             return input;
         }
+
+        public  bool IsSimilar(string x, string y)
+        {
+            if (x.Equals(y))
+                return true;
+            
+            for (int i = 0; i < x.Length; i++)
+            {
+                int newPos = i;
+                while (++newPos < x.Length)
+                {
+                    var newString = GetNewCombination(x, i, newPos);
+                    Console.WriteLine(newString);
+                }
+            }
+            return true;
+        }
+
+        private  string GetNewCombination(string toChange, int startPos, int positionToSwap)
+        {
+            var tempHolder = toChange.ToCharArray();
+            var temp = tempHolder[startPos];
+            tempHolder[startPos] = tempHolder[positionToSwap];
+            tempHolder[positionToSwap] = temp;
+            string result = new string(tempHolder);
+            //string result = toChange.Substring(0, startPos);
+            //result += toChange[positionToSwap];
+            //result += toChange.Substring(startPos + 1, positionToSwap - 1);
+            //result += toChange[startPos];
+            //result += toChange.Substring(positionToSwap + 1, (toChange.Length-1)-positionToSwap); 
+            //return result;
+            return result;
+        }
+
+        #endregion
     }
 }
