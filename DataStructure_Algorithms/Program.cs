@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,23 +9,31 @@ namespace DataStructure_Algorithms
     {
         static void Main(string[] args)
         {
-            SimilarString str = new SimilarString();
-            string[] inputGroup = {"kccomwcgcs","socgcmcwkc","sgckwcmcoc","coswcmcgkc","cowkccmsgc","cosgmccwkc","sgmkwcccoc","coswmccgkc","kowcccmsgc","kgcomwcccs"};
-
-            str.NumSimilarGroups(inputGroup);
-
             //TestSomething();
+            //TestNumerical();
+            //TestSorting();
+            //TestSimilarStrings();
+            TestConnectedPaths(); // Union Find problem.
+        }
+
+        static void TestNumerical()
+        {
+            var numerical = new NumericalAlgorithms();
+
+            var result = numerical.CalculateExponentiation(7, 11);
+            numerical.IsPrime(17);
+
+            numerical.GCD(78, 66);
+            numerical.GCD(66, 78);
+            numerical.GCD(12, 12);
+
+            numerical.LCM(20, 30);
+            numerical.LCM(100, 35);
+        }
+
+        static void TestSorting()
+        {
             Sort s = new Sort();
-            var p = new Program();
-            p.IsPrime(17);
-
-            p.GCD(78, 66);
-            p.GCD(66,78);
-            p.GCD(12, 12);
-
-            p.LCM(20, 30);
-            p.LCM(100, 35);
-            
             s.InsertionSort();
             s.SelectionSort();
             s.BubbleSort();
@@ -34,47 +43,43 @@ namespace DataStructure_Algorithms
             s.QuickSort2Iterative();
         }
 
-        long GCD (long A, long B)
+        static void TestSimilarStrings()
         {
+            SimilarString str = new SimilarString();
+            string[] inputGroup = { "kccomwcgcs", "socgcmcwkc", "sgckwcmcoc", "coswcmcgkc", "cowkccmsgc", "cosgmccwkc", "sgmkwcccoc", "coswmccgkc", "kowcccmsgc", "kgcomwcccs" };
 
-            long a = A, b = B;
-            while(B!= 0)
-            {
-                long r = A % B;
-                A = B;
-                B = r;
-            }
-            Console.WriteLine("GCD of " + a + " and " + b + " is " + A);
-            return A;
-
+            str.NumSimilarGroups(inputGroup);
         }
 
-        long LCM (long A, long B)
+        static void TestConnectedPaths()
         {
-            long gcd = GCD(A, B);
-            long product = A * B;
-            long lcm = product / gcd;
-            Console.WriteLine("LCM of " + A + " and " + B + " is " + lcm);
-            return lcm;
-        }
+            int numberOfPoints = 10;
+            IConnectedPaths connectedPaths;
+            connectedPaths = new ConnectedPathsQuickFind(numberOfPoints);
+            //connectedPaths = new ConnectedPathsQuickConnect(numberOfPoints);
+            //connectedPaths = new ConnectedPathsQuickConnectWeighted(numberOfPoints);
+             //connectedPaths = new ConnectedPathsQuickConnectWeightedPathCompression(numberOfPoints);
 
-        // Fermat's little theorem
-        bool IsPrime(int p)
-        {
-            // If p is prime and 1 <= n <= p, then n^p-1 = 1 mod p, where n is any number between 1 and p.
-            // Some times this may not work so we try multiple times. we can try upto 100 times which is pretty good.
-            Random r = new Random();
-            int k = 100;// Number of times to try to see if it is really prime.
-
-            while ( k-- > 0)
-            {
-                long n = r.Next(1, p);
-                double np_1 = Math.Pow(n, p - 1);
-                if (np_1 % p != 1)
-                    return false;
-            }
-            return true;
+            // Initially all are disconnected.
+            // Test if 1 and 7 are connected?
+            var isConnected =  connectedPaths.IsConnected(4, 3);
+            Console.WriteLine("4 and 3 connection result: " + isConnected);
+            connectedPaths.Connect(4, 3);
+            isConnected = connectedPaths.IsConnected(4, 3);
+            Console.WriteLine("4 and 3 connection result: " + isConnected);
             
+            connectedPaths.Connect(3, 8);
+            isConnected = connectedPaths.IsConnected(8, 4);
+            Console.WriteLine("8 and 4 connection result: " + isConnected);
+
+            connectedPaths.Connect(6,5);
+            connectedPaths.Connect(9,4);
+            connectedPaths.Connect(2,1);
+            connectedPaths.Connect(5,0);
+            connectedPaths.Connect(7,2);
+            connectedPaths.Connect(6,1);
+            connectedPaths.Connect(7,3);
+
         }
 
         static void TestSomething()
@@ -93,9 +98,6 @@ namespace DataStructure_Algorithms
             }
             
         }
-
-
-
     }
 
    
